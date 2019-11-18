@@ -1,15 +1,17 @@
+package lib;
+
 import java.util.ArrayList;
 
 public class Request {
 	private String url;
-	private Boolean isAPIRequest;
+	private boolean isApiRequest;
 	private String component;
 	private String method;
 	private ArrayList<String> params;
 
 	Request(String url, Boolean isAPIRequest, String component, String method, ArrayList<String> params) {
 		this.url = url;
-		this.isAPIRequest = isAPIRequest;
+		this.isApiRequest = isAPIRequest;
 		this.component = component;
 		this.method = method;
 		this.params = params;
@@ -19,21 +21,17 @@ public class Request {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setUrl(String url) { this.url = url; }
+
+	public boolean getApiRequest() {
+		return isApiRequest;
 	}
 
-	public Boolean getAPIRequest() {
-		return isAPIRequest;
+	public void setApiRequest(boolean isApiRequest) {
+		this.isApiRequest = isApiRequest;
 	}
 
-	public void setAPIRequest(Boolean APIRequest) {
-		isAPIRequest = APIRequest;
-	}
-
-	public String getComponent() {
-		return component;
-	}
+	public String getComponent() { return component; }
 
 	public void setComponent(String component) {
 		this.component = component;

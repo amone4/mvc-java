@@ -1,29 +1,27 @@
-import java.lang.reflect.Array;
+package lib;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class App {
-	private static HashMap<String, String> data;
+	private static class AppData {
+		String component;
+		boolean isApiRequest;
+	}
 
-	private static void processRequest() throws ClassNotFoundException {
-		Request request = new Request(
-				"",
-				false,
-				"Pages",
-				"index",
-				new ArrayList<>()
-		);
+	private static AppData data = new AppData();
 
+	private static Request processRequest() throws ClassNotFoundException {
+		boolean isApiRequest = false;
 		String requestUrl = Helpers.getRequestURL();
 		if (requestUrl.length() > 0) {
-			requestUrl = StringFilters.sanitizeUrl(Helpers.chopIff(request.getUrl(), "/"));
+			requestUrl = StringFilters.sanitizeUrl(Helpers.chopIff(requestUrl, "/"));
 			if (requestUrl.substring(0, 3).equals("api")) {
 				if (requestUrl.length() == 3) {
-					request.setAPIRequest(true);
+					isApiRequest = true;
 					requestUrl = "";
 				} else if (requestUrl.charAt(3) == '/') {
-					request.setAPIRequest(false);
+					isApiRequest = true;
 					requestUrl = requestUrl.substring(4);
 				}
 			}
@@ -45,6 +43,7 @@ public class App {
 				methodName[0] = Character.toUpperCase(methodName[0]);
 				componentName[0] = Character.toLowerCase(componentName[0]);
 				Class.forName("java." + Arrays.toString(componentName) + "." + Arrays.toString(methodName));
+				componentName[0] = Character.toUpperCase(componentName[0]);
 			}
 		} else methodName = "index".toCharArray();
 
@@ -52,11 +51,24 @@ public class App {
 		if (requestParts.length > 2)
 			params = new ArrayList<>(Arrays.asList(requestParts).subList(2, requestParts.length));
 		else params = null;
+
+		return new Request(requestUrl, isApiRequest, Arrays.toString(componentName), Arrays.toString(methodName), params);
 	}
 
 	public static void start() throws ClassNotFoundException {
-		App.processRequest();
+		Request request = App.processRequest();
+
+		data.component = request.getComponent();
+		data.isApiRequest = request.getApiRequest();
+
+		Session.create();
+
+		LoginSessions.init();
+
+		App.dispatchMethod(request.getMethod(), request.getParams());
 	}
 
-	public static void stop() {}
+	public static void dispatchMethod(String method, ArrayList<String> params) {
+
+	}
 }

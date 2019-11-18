@@ -1,3 +1,5 @@
+package lib;
+
 class Helpers {
 	static String getRequestURL() { return ""; }
 
