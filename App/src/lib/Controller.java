@@ -1,3 +1,3 @@
 package lib;
 
-abstract class Controller {}
+abstract public class Controller {}

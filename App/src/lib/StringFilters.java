@@ -1,5 +1,5 @@
 package lib;
 
-class StringFilters {
+public class StringFilters {
 	static String sanitizeUrl(String input) { return input; }
 }

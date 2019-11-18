@@ -1,5 +1,5 @@
 package lib;
 
-class Session {
+public class Session {
 	static void create() {}
 }

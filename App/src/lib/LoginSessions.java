@@ -1,5 +1,5 @@
 package lib;
 
-class LoginSessions {
+public class LoginSessions {
 	static void init() {}
 }
